@@ -44,5 +44,20 @@ github.traction:
 	cd "$(REPO_DIR)"/web && \
 	npm run traction
 
+build_db:
+	docker compose -f docker/docker-compose.yml build db
+
 dev:
 	vercel dev --listen 8080 --local-config vercel-local.json
+
+down:
+	docker-compose -f docker/docker-compose.yml down -v
+
+reset_db:
+	rm -rf docker/volumes/db/data/
+
+up: build_db
+	docker compose -f docker/docker-compose.yml pull
+	docker compose -f docker/docker-compose.yml up -d
+
+restart: down reset_db up

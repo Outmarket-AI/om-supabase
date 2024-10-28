@@ -1,0 +1,27 @@
+# Dockerfile.postgres
+FROM supabase/postgres:15.1.1.78
+
+# Install dependencies
+RUN apt-get update && \
+    apt-get install -y \
+    gnupg \
+    curl \
+    wget \
+    && rm -rf /var/lib/apt/lists/*
+
+# Add the PostgreSQL official repository
+RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ focal-pgdg main" > /etc/apt/sources.list.d/pgdg.list && \
+    wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+
+# Install plpython3 extension for PostgreSQL 15
+RUN apt-get update && \
+apt-get install -y postgresql-plpython3-15 && \
+rm -rf /var/lib/apt/lists/*
+
+# Add more extensions if needed
+
+# Set the entrypoint to use the original one from the base image
+ENTRYPOINT ["docker-entrypoint.sh"]
+
+# Default command (runs Postgres)
+CMD ["postgres"]

@@ -482,3 +482,9 @@ services:
 
 volumes:
   db-config:
+
+networks:
+  default:
+    name: om_internal_network
+    driver: bridge
+
